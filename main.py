@@ -4,10 +4,10 @@ from pydantic import BaseModel
 
 # Conexión a la base de datos MySQL
 conn = mysql.connector.connect(
-    host="tu_host",
-    user="tu_usuario",
-    password="tu_contraseña",
-    database="tu_base_de_datos"
+    host="lcpbq9az4jklobvq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com	",
+    user="bo308pcse26i5bhg",
+    password="k4c63m8edzcp2gkb",
+    database="wb9hlgewc50qddy9"
 )
 
 cursor = conn.cursor()
@@ -43,7 +43,7 @@ conn = mysql.connector.connect(
     host="lcpbq9az4jklobvq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user="bo308pcse26i5bhg",
     password="k4c63m8edzcp2gkb",
-    database="contactos.db"
+    database="wb9hlgewc50qddy9
 )
 
 app = fastapi.FastAPI()
