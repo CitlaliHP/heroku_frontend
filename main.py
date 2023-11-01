@@ -1,35 +1,16 @@
 import fastapi
-import sqlite3
+import mysql.connector
 from pydantic import BaseModel
 
-import sqlite3
-conn = sqlite3.connect('contactos.db')  # reemplaza 'tu_base_de_datos.db' con el nombre de tu base de datos
-cursor = conn.cursor()
-
-# Crear tabla e insertar datos
-cursor.executescript('''
-    CREATE TABLE contactos (
-    email VARCHAR PRIMARY KEY,
-    nombre TEXT,
-    telefono TEXT
-);
-
-INSERT INTO contactos (email, nombre, telefono)
-VALUES ("juan@example.com", "Juan Pérez", "555-123-4567");
-
-INSERT INTO contactos (email, nombre, telefono)
-VALUES ("maria@example.com", "María García", "555-678-9012");
-''')
-
-conn.commit()
-conn.close()
-
-
-# Conexión a la base de datos SQLite
-conn = sqlite3.connect('contactos.db')
+# Conexión a la base de datos MySQL
+conn = mysql.connector.connect(
+    host="tu_host",
+    user="tu_usuario",
+    password="tu_contraseña",
+    database="tu_base_de_datos"
+)
 
 app = fastapi.FastAPI()
-
 
 class Contacto(BaseModel):
     email: str
@@ -40,7 +21,7 @@ class Contacto(BaseModel):
 async def crear_contacto(contacto: Contacto):
     """Crea un nuevo contacto."""
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO contactos (email, nombres, telefono) VALUES (?, ?, ?)',
+    cursor.execute('INSERT INTO contactos (email, nombres, telefono) VALUES (%s, %s, %s)',
                    (contacto.email, contacto.nombres, contacto.telefono))
     conn.commit()
     return contacto
@@ -60,7 +41,7 @@ async def obtener_contactos():
 async def obtener_contacto(email: str):
     """Obtiene un contacto por su email."""
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM contactos WHERE email = ?', (email,))
+    cursor.execute('SELECT * FROM contactos WHERE email = %s', (email,))
     row = cursor.fetchone()
     if row is not None:
         contacto = Contacto(email=row[0], nombres=row[1], telefono=row[2])
@@ -72,13 +53,19 @@ async def obtener_contacto(email: str):
 async def actualizar_contacto(email: str, contacto: Contacto):
     """Actualiza un contacto."""
     cursor = conn.cursor()
-    cursor.execute('UPDATE contactos SET nombres = ?, telefono = ? WHERE email = ?',
+    cursor.execute('UPDATE contactos SET nombres = %s, telefono = %s WHERE email = %s',
                    (contacto.nombres, contacto.telefono, email))
     conn.commit()
     return contacto
 
 @app.delete("/contactos/{email}")
 async def eliminar_contacto(email: str):
+    """Elimina un contacto."""
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM contactos WHERE email = %s', (email,))
+    conn.commit()
+    return Contacto
+
     """Elimina un contacto."""
     cursor = conn.cursor()
     cursor.execute('DELETE FROM contactos WHERE email = ?', (email,))
