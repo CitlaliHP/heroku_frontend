@@ -45,7 +45,7 @@ conn = mysql.connector.connect(
     user="bo308pcse26i5bhg",
     password="k4c63m8edzcp2gkb",
     port="3306",
-    database="wb9hlgewc50qddy9
+    database="wb9hlgewc50qddy9"
 )
 
 app = fastapi.FastAPI()
