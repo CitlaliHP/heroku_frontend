@@ -7,6 +7,7 @@ conn = mysql.connector.connect(
     host="lcpbq9az4jklobvq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com	",
     user="bo308pcse26i5bhg",
     password="k4c63m8edzcp2gkb",
+    port="3306",
     database="wb9hlgewc50qddy9"
 )
 
@@ -43,6 +44,7 @@ conn = mysql.connector.connect(
     host="lcpbq9az4jklobvq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user="bo308pcse26i5bhg",
     password="k4c63m8edzcp2gkb",
+    port="3306",
     database="wb9hlgewc50qddy9
 )
 
