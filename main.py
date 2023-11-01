@@ -4,6 +4,42 @@ from pydantic import BaseModel
 
 # Conexión a la base de datos MySQL
 conn = mysql.connector.connect(
+    host="tu_host",
+    user="tu_usuario",
+    password="tu_contraseña",
+    database="tu_base_de_datos"
+)
+
+cursor = conn.cursor()
+
+# Crear la tabla en MySQL
+cursor.execute('''
+    CREATE TABLE contactos (
+        email VARCHAR(255) PRIMARY KEY,
+        nombre TEXT,
+        telefono VARCHAR(20)
+    )
+''')
+
+# Insertar datos en la tabla
+insert_query = '''
+    INSERT INTO contactos (email, nombre, telefono)
+    VALUES (%s, %s, %s)
+'''
+
+contactos_data = [
+    ("juan@example.com", "Juan Pérez", "555-123-4567"),
+    ("maria@example.com", "María García", "555-678-9012")
+]
+
+cursor.executemany(insert_query, contactos_data)
+
+# Confirmar y cerrar la conexión
+conn.commit()
+conn.close()
+
+# Conexión a la base de datos MySQL
+conn = mysql.connector.connect(
     host="lcpbq9az4jklobvq.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
     user="bo308pcse26i5bhg",
     password="k4c63m8edzcp2gkb",
